@@ -5,6 +5,9 @@ where
 import Data.List as L
 
 type Variable = String
+--Ejemplos de variables:
+-- "p"
+-- "q"
 
 data PLvar v = -- v es un parametro para el tipo de variables
           Bot                       -- Constructor para bottom
@@ -18,7 +21,7 @@ data PLvar v = -- v es un parametro para el tipo de variables
 
 type PL = PLvar Variable  -- PL con tipo de variables Variable
 
---Función que regresa una lista de las variables que tiene la PL 
+--Función que regresa una lista de las variables que tiene la fórmula de la PL 
 varsOf :: PL -> [Variable]
 varsOf phi = case phi of
             Bot             -> []

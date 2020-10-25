@@ -8,7 +8,7 @@ type Valuacion = Variable -> Bool
 
 type Modelo = [Variable]
 
--- Funcion para ver si una PL satisface un modelo en específico
+-- Funcion para ver si una fórmula de la PL satisface un modelo en específico
 satModPL :: Modelo -> PL -> Bool 
 satModPL m phi = case phi of 
                 Bot             -> False     

@@ -1,3 +1,5 @@
+--Erick Martínez Piza
+--Modulo que se usaro como principal
 module Practica01
 
 where
@@ -5,7 +7,7 @@ where
 import Variables as PL (PL,PLvar(..),varsOf)
 import Valuaciones (Valuacion,Modelo,satModPL)
 
---Función que devuelve el número de conjunciones de una PL
+--Función que devuelve el número de conjunciones de una fórmula de la PL
 conInPl :: PL -> Int
 conInPl phi = case phi of
             Bot            -> 0
@@ -23,7 +25,7 @@ conInPl phi = case phi of
 -- conInPl ((Var "p") `PL.Con` (Var "q"))
 -- conInPl (((Var "p") `PL.Con` (Var "q"))`PL.Con` (Var "q"))
 
--- Función que quita las implicaciones de una PL
+-- Función que quita las implicaciones de una fórmula de la PL
 quitaImp :: PL -> PL
 quitaImp phi = case phi of
             Bot            -> ((Neg (Var "p")) `PL.Dis` (Var "p"))
@@ -49,6 +51,7 @@ quitaImp phi = case phi of
 -- quitaImp (Neg((Var "p") `PL.Imp` (Var "q")))
 -- quitaImp (((Var "p") `PL.Imp` (Var "r")) `PL.Imp` (Var "q"))
 
+-- Función que transforma a una fórmula de la PL con solamente negaciones y disyunciones
 lNor :: PL -> PL
 lNor phi = case phi of
             Bot            -> ((Neg (Var "p")) `PL.Dis` (   Var "p"))
@@ -58,4 +61,11 @@ lNor phi = case phi of
             Dis alpha beta -> ((lNor alpha) `PL.Dis` (lNor beta))
             Con alpha beta -> (Neg(lNor alpha) `PL.Dis` Neg(lNor beta))
             Neg alpha      -> Neg(lNor alpha)
+--Ejemplos de test que se pueden correr en la terminal:
+-- lNor Bot
+-- lNor Top
+-- lNor (Var "p")
+-- lNor ((Var "p") `PL.Dis` (Var "q"))
+-- lNor ((Var "p") `PL.Con` (Var "q"))
+-- lNor (((Var "p") `PL.Con` (Var "q")) `PL.Imp` (Var "r"))
            
