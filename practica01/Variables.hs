@@ -1,10 +1,12 @@
+--Erick Martínez Piza
+--Módulo donde definimos nuestras variables y a las fórmulas de PL
 module Variables
 
 where
 
 import Data.List as L
 
-type Variable = String
+type Variable = String -- Variable con tipo de cadena
 --Ejemplos de variables:
 -- "p"
 -- "q"

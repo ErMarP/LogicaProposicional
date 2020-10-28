@@ -1,11 +1,11 @@
 --Erick Martínez Piza
---Modulo que se usaro como principal
+--Módulo que se usará como principal
 module Practica01
 
 where
 
 import Variables as PL (PL,PLvar(..),varsOf)
-import Valuaciones (Valuacion,Modelo,satModPL)
+import Valuaciones (Valuacion,Modelo,mSatisface)
 
 --Función que devuelve el número de conjunciones de una fórmula de la PL
 conInPl :: PL -> Int
@@ -23,7 +23,8 @@ conInPl phi = case phi of
 -- conInPl (Var "p")
 -- conInPl ((Var "p") `PL.Dis` (Var "q"))
 -- conInPl ((Var "p") `PL.Con` (Var "q"))
--- conInPl (((Var "p") `PL.Con` (Var "q"))`PL.Con` (Var "q"))
+-- conInPl (((Var "p") `PL.Con` (Var "q"))`PL.Con` (Var "r"))
+-- conInPl (((Var "p") `PL.Con` (Var "q"))`PL.Dis` ((Var "r") `PL.Con` (Var "s")))
 
 -- Función que quita las implicaciones de una fórmula de la PL
 quitaImp :: PL -> PL
@@ -34,21 +35,15 @@ quitaImp phi = case phi of
             Imp alpha beta -> ((Neg(quitaImp alpha)) `PL.Dis` (quitaImp beta))
             Dis alpha beta -> ((quitaImp alpha) `PL.Dis` (quitaImp beta))
             Con alpha beta -> ((quitaImp alpha) `PL.Con` (quitaImp beta))
-            Neg alpha      -> case alpha of
-                            Bot     -> (quitaImp Bot)
-                            Top     -> (quitaImp Top) 
-                            Var x   -> (Neg(Var x))
-                            Imp a b -> ((quitaImp a) `PL.Con` (Neg(quitaImp b)))
-                            Dis a b -> ((Neg(quitaImp a)) `PL.Con` (Neg(quitaImp b)))
-                            Con a b -> ((Neg(quitaImp a)) `PL.Dis` (Neg(quitaImp b)))
-                            Neg a   -> Neg(quitaImp a)
+            Neg alpha      -> Neg(quitaImp alpha)
 --Ejemplos de test que se pueden correr en la terminal:
 -- quitaImp Bot
 -- quitaImp Top
 -- quitaImp (Var "p")
+-- quitaImp (Neg(Var "p"))
 -- quitaImp ((Var "p") `PL.Con` (Var "q"))
 -- quitaImp ((Var "p") `PL.Imp` (Var "q"))
--- quitaImp (Neg((Var "p") `PL.Imp` (Var "q")))
+-- quitaImp ((Neg(Var "p")) `PL.Imp` (Var "q"))
 -- quitaImp (((Var "p") `PL.Imp` (Var "r")) `PL.Imp` (Var "q"))
 
 -- Función que transforma a una fórmula de la PL con solamente negaciones y disyunciones
@@ -65,7 +60,8 @@ lNor phi = case phi of
 -- lNor Bot
 -- lNor Top
 -- lNor (Var "p")
+-- lNor (Neg(Var "p"))
 -- lNor ((Var "p") `PL.Dis` (Var "q"))
 -- lNor ((Var "p") `PL.Con` (Var "q"))
+-- lNor ((Neg(Var "p")) `PL.Con` (Var "q"))
 -- lNor (((Var "p") `PL.Con` (Var "q")) `PL.Imp` (Var "r"))
-           
